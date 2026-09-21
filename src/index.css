@@ -1,0 +1,80 @@
+:root {
+  --text: #564d47;
+  --text-h: #14253a;
+  --bg: #f2ede4;
+  --panel-bg: rgba(255, 251, 246, 0.82);
+  --surface-muted: rgba(255, 247, 238, 0.92);
+  --surface-emphasis: rgba(255, 255, 255, 0.88);
+  --border: rgba(53, 64, 79, 0.12);
+  --border-strong: rgba(53, 64, 79, 0.24);
+  --accent-strong: #bf4c22;
+  --accent-border: rgba(191, 76, 34, 0.35);
+  --accent-muted: rgba(191, 76, 34, 0.12);
+  --shadow-soft: rgba(14, 22, 32, 0.06) 0 14px 38px;
+
+  --sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  --heading: 'Space Grotesk', 'IBM Plex Sans', sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color: var(--text);
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+#root {
+  width: 1400px;
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top left, rgba(191, 76, 34, 0.14), transparent 26%),
+    radial-gradient(circle at top right, rgba(31, 87, 141, 0.1), transparent 28%),
+    linear-gradient(180deg, #f5efe6, #efe7dd);
+}
+
+h1,
+h2,
+h3,
+strong {
+  font-family: var(--heading);
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+h1 {
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
+  margin: 0 0 18px;
+  @media (max-width: 1024px) {
+    margin-bottom: 14px;
+  }
+}
+
+h2 {
+  font-size: 1.7rem;
+  line-height: 118%;
+  letter-spacing: -0.03em;
+  margin: 0;
+  @media (max-width: 1024px) {
+    font-size: 1.35rem;
+  }
+}
+
+p {
+  margin: 0;
+}
