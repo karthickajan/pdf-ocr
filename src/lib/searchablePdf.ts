@@ -1,20 +1,7 @@
 import type { OcrPage } from './pdfPipeline'
 
 export const buildSearchablePdf = async (file: File, ocrPages: OcrPage[]) => {
-  const {
-    PDFDocument,
-    StandardFonts,
-    beginText,
-    endText,
-    popGraphicsState,
-    pushGraphicsState,
-    setCharacterSqueeze,
-    setFontAndSize,
-    setTextMatrix,
-    setTextRenderingMode,
-    showText,
-    TextRenderingMode,
-  } = await import('pdf-lib')
+  const { PDFDocument, StandardFonts } = await import('pdf-lib')
   const source = await file.arrayBuffer()
   const pdf = await PDFDocument.load(source)
   const font = await pdf.embedFont(StandardFonts.Helvetica)
@@ -30,7 +17,6 @@ export const buildSearchablePdf = async (file: File, ocrPages: OcrPage[]) => {
     const { width, height } = page.getSize()
     const scaleX = width / ocrPage.width
     const scaleY = height / ocrPage.height
-    const fontKey = page.node.newFontDictionary(font.name, font.ref)
 
     ocrPage.words.forEach((word) => {
       const text = word.text.trim()
@@ -39,29 +25,15 @@ export const buildSearchablePdf = async (file: File, ocrPages: OcrPage[]) => {
         return
       }
 
-      const boxWidth = Math.max(1, (word.bbox.x1 - word.bbox.x0) * scaleX)
-      const boxHeight = Math.max(1, (word.bbox.y1 - word.bbox.y0) * scaleY)
-      const fontSize = Math.max(4, font.sizeAtHeight(boxHeight))
-      const naturalWidth = Math.max(0.001, font.widthOfTextAtSize(text, fontSize))
-      const naturalHeight = font.heightAtSize(fontSize, { descender: true })
-      const visibleHeight = font.heightAtSize(fontSize, { descender: false })
-      const descenderHeight = Math.max(0, naturalHeight - visibleHeight)
-      const horizontalScale = Math.max(40, Math.min(250, (boxWidth / naturalWidth) * 100))
-      const fittedVisibleHeight = visibleHeight * (boxHeight / naturalHeight)
-      const baselineY =
-        height - word.bbox.y1 * scaleY + descenderHeight + (boxHeight - fittedVisibleHeight) * 0.5
+      const fontSize = Math.max(4, (word.bbox.y1 - word.bbox.y0) * scaleY * 0.82)
 
-      page.pushOperators(
-        pushGraphicsState(),
-        beginText(),
-        setTextRenderingMode(TextRenderingMode.Invisible),
-        setFontAndSize(fontKey, fontSize),
-        setCharacterSqueeze(horizontalScale),
-        setTextMatrix(1, 0, 0, boxHeight / naturalHeight, word.bbox.x0 * scaleX, baselineY),
-        showText(font.encodeText(text)),
-        endText(),
-        popGraphicsState(),
-      )
+      page.drawText(text, {
+        x: word.bbox.x0 * scaleX,
+        y: height - word.bbox.y1 * scaleY,
+        size: fontSize,
+        font,
+        opacity: 0,
+      })
     })
   })
 

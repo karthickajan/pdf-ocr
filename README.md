@@ -1,14 +1,6 @@
 # PDF OCR
 
-Client-side OCR for scanned PDFs, optimized for large engineering drawings, wiring sheets, terminal layouts, and image-only technical documents.
-
-## What it does
-
-- Runs entirely in the browser with no backend upload.
-- Analyzes each PDF page before OCR.
-- Uses selective OCR for image-heavy pages.
-- Highlights where matching words appear on page previews.
-- Exports a searchable PDF with an invisible text layer.
+Client-side OCR for scanned PDFs, optimized for large engineering drawings, wiring sheets, terminal layouts, and other image-heavy technical documents.
 
 ## Local development
 
@@ -17,23 +9,31 @@ npm install
 npm run dev
 ```
 
-## Production build
+## Build for GitHub Pages
 
 ```bash
 npm run build
-npm run preview
 ```
 
-## Deployment
+This project is configured to publish from the `main` branch using the `docs/` folder.
 
-The repo is configured for GitHub Pages deployment from the `main` branch using GitHub Actions.
+## GitHub Pages settings
 
-- Vite base path: `/pdf-ocr/`
-- Workflow: `.github/workflows/deploy.yml`
+Use these repository settings:
 
-After pushing to `main`, GitHub Actions will build and publish the contents of `dist` automatically.
+- Source: `Deploy from a branch`
+- Branch: `main`
+- Folder: `/docs`
 
-## Notes
+## Important deployment note
 
-- Large OCR libraries are lazy-loaded to keep the initial app bundle smaller.
-- Best results come from the `Drawing mode` OCR strategy for sparse engineering PDFs.
+Because this repo is hosted directly from `main`, every deployable commit must include freshly built `docs/` output.
+
+Typical deploy flow:
+
+```bash
+npm run build
+git add .
+git commit -m "Update site"
+git push
+```
