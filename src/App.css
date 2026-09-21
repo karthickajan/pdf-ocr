@@ -40,6 +40,10 @@
   max-width: 720px;
 }
 
+.hero-copy h1 {
+  color: #f5f0e8;
+}
+
 .eyebrow,
 .panel-kicker {
   margin: 0 0 10px;
